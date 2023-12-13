@@ -170,6 +170,7 @@ class AStar {
     if (y < this.xLim)
       n.push([x, y + 1]);
 
+    n = n.filter(([x, y]) => this.grid[x]?.[y] === 0);
     return n;
   }
 
