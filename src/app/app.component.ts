@@ -24,16 +24,15 @@ export class AppComponent {
     // }
     this.grid = [
       [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+      [0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
       [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
     ];
 
 
     this.A = new AStar(this.grid, [0, 0]);
-    this.A.applyStep();
   }
 
   log() {
@@ -75,13 +74,9 @@ export class AppComponent {
 class AStar {
   open_list: Node[] = [];
   closed_list: Node[] = [];
-  // gScore: Map<Node, number> = new Map();
   goal: point;
   xLim: number;
   yLim: number;
-
-  // nodesSet: Map<point, Node> = new Map();
-
 
 
   constructor(
@@ -195,11 +190,3 @@ interface Node {
   fScore: number,
   gScore: number,
 }
-// class Node {
-//   constructor(
-//     public x: number,
-//     public y: number,
-//     public fScore: number,
-//     public gScore: number,
-//   ) { }
-// }
