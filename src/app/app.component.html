@@ -2,15 +2,15 @@
 
 <div class="container">
   <div class="row"
-      *ngFor="let row of grid; let i = index"
+      *ngFor="let row of grid; let y = index"
       >
     <div class="block"
-        *ngFor="let block of row; let j = index"
-        (click)="blockClicked(i, j)"
+        *ngFor="let block of row; let x = index"
+        (click)="blockClicked(x, y)"
         [ngStyle]="{
-          'background-color': blockColor(i, j),
+          'background-color': blockColor(x, y),
         }"
-        title="({{i}}, {{j}})"
+        title="({{x}}, {{y}})"
         >
     </div>
   </div>

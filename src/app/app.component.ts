@@ -44,26 +44,28 @@ export class AppComponent {
     this.A.applyStep();
   }
 
-  blockClicked(i: number, j: number) {
-    this.grid[i][j] = (this.grid[i][j] == 0) ? 1 : 0;
+  /* Functionality of clicking a block. */
+  blockClicked(x: number, y: number) {
+    this.grid[y][x] = (this.grid[y][x] == 0) ? 1 : 0;
   }
 
-  blockColor(i: number, j: number) {
+  /* Determine block color for interface */
+  blockColor(x: number, y: number) {
     // console.log(i,j, this.grid.length-1, this.grid[0].length-1,);
-    if (i == 0 && j == 0)
+    if (x == 0 && y == 0)
       return 'cadetblue';
     if (
-      i == this.grid.length - 1 &&
-      j == this.grid[0].length - 1
+      x == this.grid[0].length - 1 &&
+      y == this.grid.length - 1
     )
       return 'coral';
 
-    if (this.A.findPoint([i, j], this.A.open_list))
+    if (this.A.findPoint([x, y], this.A.open_list))
       return 'lightgreen';
-    if (this.A.findPoint([i, j], this.A.closed_list))
+    if (this.A.findPoint([x, y], this.A.closed_list))
       return 'lightseagreen';
 
-    return this.grid[i][j] === 0
+    return this.grid[y][x] === 0
       ? 'lightgray'
       : 'dimgray';
   }
@@ -86,8 +88,8 @@ class AStar {
     public grid: number[][],
     public start: point,
   ) {
-    this.xLim = this.grid[0].length;
-    this.yLim = this.grid.length;
+    this.xLim = this.grid[0].length - 1;
+    this.yLim = this.grid.length - 1;
 
     this.goal = [this.xLim, this.yLim];
 
@@ -167,10 +169,10 @@ class AStar {
       n.push([x + 1, y]);
     if (y > 0)
       n.push([x, y - 1]);
-    if (y < this.xLim)
+    if (y < this.yLim)
       n.push([x, y + 1]);
 
-    n = n.filter(([x, y]) => this.grid[x]?.[y] === 0);
+    n = n.filter(([x, y]) => this.grid[y][x] === 0);
     return n;
   }
 
