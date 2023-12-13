@@ -68,6 +68,19 @@ export class AppComponent {
       ? 'lightgray'
       : 'dimgray';
   }
+
+  sortNodesList(list: Node[]) {
+    const _list = [...list];
+    _list.sort((a, b) => {
+      if (a.fScore > b.fScore)
+        return 1;
+      else if (a.fScore < b.fScore)
+        return -1;
+      else
+        return 0;
+    });
+    return _list;
+  }
 }
 
 

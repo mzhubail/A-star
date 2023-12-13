@@ -22,10 +22,23 @@
 
 <br>
 
-<p>
-  Open list: {{ A.open_list | json }}
-</p>
-<p>
-  Closed list: {{ A.closed_list| json }}
-</p>
-<!-- <router-outlet></router-outlet> -->
+<div class="info-container">
+  <div>
+    Open list:
+    <ol>
+      <li *ngFor="let entry of sortNodesList(A.open_list); let index = index">
+        {{ entry | json }}
+      </li>
+    </ol>
+  </div>
+
+
+  <div>
+    Closed list:
+    <ol>
+      <li *ngFor="let entry of A.closed_list; let index = index">
+        {{ entry | json }}
+      </li>
+    </ol>
+  </div>
+</div>

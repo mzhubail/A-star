@@ -17,3 +17,17 @@ $block-spacing: 10px;
   }
 }
 
+.info-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+  & > div {
+    width: 48%;
+  }
+  & > div:last-of-type {
+    padding-left: 1rem;
+    border-left: black solid 1px;
+  }
+}
+
