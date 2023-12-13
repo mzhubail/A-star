@@ -1,0 +1,19 @@
+$block-size: 40px;
+$block-spacing: 10px;
+
+.container {
+  .row {
+    height: $block-size;
+    margin-bottom: $block-spacing;
+  }
+
+  .block {
+    display: inline-block;
+    height: $block-size;
+    width: $block-size;
+
+    margin-left: $block-spacing;
+    background-color: teal;
+  }
+}
+

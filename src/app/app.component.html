@@ -1,11 +1,18 @@
 {{ title }}
 
 <div class="container">
-  <div class="block"></div>
-  <div class="block"></div>
-  <div class="block"></div>
-  <div class="block"></div>
-  <div class="block"></div>
+  <div class="row"
+      *ngFor="let row of grid; let i = index"
+      >
+    <div class="block"
+        *ngFor="let block of row; let j = index"
+        (click)="blockClicked(i, j)"
+        [ngStyle]="{
+          'background-color': block === 0 ? 'lightgray' : 'rosybrown',
+        }"
+        >
+    </div>
+  </div>
 </div>
 
 

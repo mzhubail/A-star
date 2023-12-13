@@ -43,6 +43,10 @@ export class AppComponent {
   applyStep() {
     this.A.applyStep();
   }
+
+  blockClicked(i: number, j: number) {
+    this.grid[i][j] = (this.grid[i][j] == 0) ? 1 : 0;
+  }
 }
 
 
