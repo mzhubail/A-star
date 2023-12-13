@@ -78,30 +78,46 @@ class AStar {
   public applyStep() {
     if (this.open_list.length === 0)
       return;
-    const currentNode = this.lowestFScore(this.open_list)
+    const currentNode = this.popLowestFScore(this.open_list)
 
     if (this.isGoal(currentNode))
       alert('Goal Found');
 
     this.neighboursOf(currentNode).forEach(neighbour => {
-      const
-        newGScore = currentNode.gScore + 1;
-      
+      const newGScore = currentNode.gScore + 1;
+
       let nNode;
 
+      // Search in open list
       if (nNode = this.findPoint(neighbour, this.open_list)) {
-        console.log(nNode);
+        console.log('In open list', nNode);
       }
-      // if newGScore < neighbourNode.g
+      // Search in closed list
+      else if (nNode = this.findPoint(neighbour, this.closed_list)) {
+        console.log('In closed list', nNode);
+      }
+      else {
+        this.open_list.unshift({
+          x: neighbour[0],
+          y: neighbour[1],
+          gScore: newGScore,
+          fScore: newGScore + this.hValue(neighbour),
+        });
+      }
     });
+
+    this.closed_list.push(currentNode);
   }
 
-  public lowestFScore(l: Node[]) {
-    let min = l[0];
-    l.forEach(node => {
-      if (node.fScore < min.fScore)
+  public popLowestFScore(l: Node[]) {
+    let min = l[0], ind = 0;
+    l.forEach((node, index) => {
+      if (node.fScore < min.fScore) {
         min = node;
+        ind = index;
+      }
     });
+    l.splice(ind, 1);
     return min;
   }
 
@@ -119,8 +135,6 @@ class AStar {
   }
 
   public neighboursOf(p: Node): point[] {
-    // const x: number, y: number = this.helper(p);
-    // console.log(this.helper(p));
     const { x, y } = p;
     let n: point[] = [];
     if (x > 0)
@@ -132,23 +146,8 @@ class AStar {
     if (y < this.xLim)
       n.push([x, y + 1]);
 
-    // console.log(n);
     return n;
   }
-
-  // private helper(p: point | Node): [number, number] {
-  //   let x, y;
-  //   if (p instanceof Node) {
-  //     console.log('instance of node');
-  //     x = p.x;
-  //     y = p.y;
-  //   } else {
-  //     console.log('not instance of node');
-  //     x = p[0];
-  //     y = p[1];
-  //   }
-  //   return [x, y];
-  // }
 
   public isGoal(p: Node) {
     const [x, y] = this.goal;
@@ -156,9 +155,8 @@ class AStar {
   }
 
   public findPoint(p: point, l: Node[]): Node | undefined {
-    console.log(p);
     const [targetX, targetY] = p;
-    return l.find(node => targetX === node.x  && targetY === node.y);
+    return l.find(node => targetX === node.x && targetY === node.y);
   }
 }
 
