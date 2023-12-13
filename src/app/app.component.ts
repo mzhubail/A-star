@@ -47,6 +47,26 @@ export class AppComponent {
   blockClicked(i: number, j: number) {
     this.grid[i][j] = (this.grid[i][j] == 0) ? 1 : 0;
   }
+
+  blockColor(i: number, j: number) {
+    // console.log(i,j, this.grid.length-1, this.grid[0].length-1,);
+    if (i == 0 && j == 0)
+      return 'cadetblue';
+    if (
+      i == this.grid.length - 1 &&
+      j == this.grid[0].length - 1
+    )
+      return 'coral';
+
+    if (this.A.findPoint([i, j], this.A.open_list))
+      return 'lightgreen';
+    if (this.A.findPoint([i, j], this.A.closed_list))
+      return 'lightseagreen';
+
+    return this.grid[i][j] === 0
+      ? 'lightgray'
+      : 'dimgray';
+  }
 }
 
 

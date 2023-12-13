@@ -8,8 +8,9 @@
         *ngFor="let block of row; let j = index"
         (click)="blockClicked(i, j)"
         [ngStyle]="{
-          'background-color': block === 0 ? 'lightgray' : 'rosybrown',
+          'background-color': blockColor(i, j),
         }"
+        title="({{i}}, {{j}})"
         >
     </div>
   </div>
