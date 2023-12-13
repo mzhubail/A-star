@@ -10,18 +10,20 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'app';
-  size = [10, 10];
   grid: number[][] = [];
   A: AStar;
 
+
   constructor() {
-    // for (let i = 0; i < this.size[0]; i++) {
+    // let size = [10, 10];
+    // for (let i = 0; i < size[0]; i++) {
     //   let row = [];
-    //   for (let j = 0; j < this.size[1]; j++)
+    //   for (let j = 0; j < size[1]; j++)
     //     row.push(0);
     //   this.grid.push(row);
     // }
+
+    // Note that 1 represents obstacle and 0 represents a free block
     this.grid = [
       [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
@@ -43,32 +45,39 @@ export class AppComponent {
     this.A.applyStep();
   }
 
+
   /* Functionality of clicking a block. */
   blockClicked(x: number, y: number) {
     this.grid[y][x] = (this.grid[y][x] == 0) ? 1 : 0;
   }
 
+
   /* Determine block color for interface */
   blockColor(x: number, y: number) {
-    // console.log(i,j, this.grid.length-1, this.grid[0].length-1,);
+    // Start node
     if (x == 0 && y == 0)
       return 'cadetblue';
+
+    // Goal node
     if (
       x == this.grid[0].length - 1 &&
       y == this.grid.length - 1
     )
       return 'coral';
 
-    if (this.A.findPoint([x, y], this.A.open_list))
+    if (this.A.findNode([x, y], this.A.open_list))
       return 'lightgreen';
-    if (this.A.findPoint([x, y], this.A.closed_list))
+    if (this.A.findNode([x, y], this.A.closed_list))
       return 'lightseagreen';
 
+    // Obstacles and free nodes
     return this.grid[y][x] === 0
       ? 'lightgray'
       : 'dimgray';
   }
 
+
+  /* Sorts a list of nodes.  Used in the interface for open list */
   sortNodesList(list: Node[]) {
     const _list = [...list];
     _list.sort((a, b) => {
@@ -87,14 +96,18 @@ export class AppComponent {
 class AStar {
   open_list: Node[] = [];
   closed_list: Node[] = [];
-  goal: point;
+
+  // Coordinates of goal node
+  goal: Coordinates;
+
+  // Upper limits on x and y values, based on the size of the grid
   xLim: number;
   yLim: number;
 
 
   constructor(
     public grid: number[][],
-    public start: point,
+    public start: Coordinates,
   ) {
     this.xLim = this.grid[0].length - 1;
     this.yLim = this.grid.length - 1;
@@ -108,6 +121,7 @@ class AStar {
       fScore: this.hValue(start),
     });
   }
+
 
   public applyStep() {
     if (this.open_list.length === 0)
@@ -123,14 +137,17 @@ class AStar {
       let nNode;
 
       // Search in open list
-      if (nNode = this.findPoint(neighbour, this.open_list)) {
+      if (nNode = this.findNode(neighbour, this.open_list)) {
         console.log('In open list', nNode);
       }
       // Search in closed list
-      else if (nNode = this.findPoint(neighbour, this.closed_list)) {
+      else if (nNode = this.findNode(neighbour, this.closed_list)) {
         console.log('In closed list', nNode);
       }
       else {
+        // Note that the neighbour is added to the beginning of the open_list.
+        // Thus when nodes have the same f-score the search prefers newly
+        // introduced nodes.
         this.open_list.unshift({
           x: neighbour[0],
           y: neighbour[1],
@@ -143,6 +160,11 @@ class AStar {
     this.closed_list.push(currentNode);
   }
 
+
+  /* Remove the node with the lowest f-score from the list.
+   *
+   * Returns the node.
+   */
   public popLowestFScore(l: Node[]) {
     let min = l[0], ind = 0;
     l.forEach((node, index) => {
@@ -155,7 +177,9 @@ class AStar {
     return min;
   }
 
-  public hValue(p: point | Node) {
+
+  /* Calculate h-value vased on manhattan distance */
+  public hValue(p: Coordinates | Node) {
     let x, y;
     if ('x' in p && 'y' in p) {
       x = p.x;
@@ -168,9 +192,16 @@ class AStar {
       Math.abs(y - this.goal[1]);
   }
 
-  public neighboursOf(p: Node): point[] {
+
+  /* Find neighbours of a given node.
+   *
+   * Note that all values retured are withing the constraints of the grid and
+   * are not obstracles.
+   */
+  public neighboursOf(p: Node): Coordinates[] {
     const { x, y } = p;
-    let n: point[] = [];
+    let n: Coordinates[] = [];
+
     if (x > 0)
       n.push([x - 1, y]);
     if (x < this.xLim)
@@ -180,22 +211,29 @@ class AStar {
     if (y < this.yLim)
       n.push([x, y + 1]);
 
+    // Filter out obstacles
     n = n.filter(([x, y]) => this.grid[y][x] === 0);
+
     return n;
   }
 
+
+  /* Check goal node */
   public isGoal(p: Node) {
     const [x, y] = this.goal;
     return p.x === x && p.y === y;
   }
 
-  public findPoint(p: point, l: Node[]): Node | undefined {
+  /* Search for given coordinate withing a list, and return the node
+   * corresponding to it.
+   */
+  public findNode(p: Coordinates, l: Node[]): Node | undefined {
     const [targetX, targetY] = p;
     return l.find(node => targetX === node.x && targetY === node.y);
   }
 }
 
-type point = [number, number];
+type Coordinates = [number, number];
 
 interface Node {
   x: number,
