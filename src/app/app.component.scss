@@ -103,3 +103,12 @@ $block-spacing: 10px;
 
 
 
+.select-start .block:hover {
+  background-color: lighten($color: (cornflowerblue), $amount: 25%);
+}
+.select-goal .block:hover {
+  background-color: lighten($color: (coral), $amount: 25%);
+}
+.select-obstacle .block.free:hover {
+  background-color: lightgray;
+}

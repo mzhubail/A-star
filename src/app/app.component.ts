@@ -102,7 +102,7 @@ export class AppComponent {
 
     // Obstacles and free nodes
     return this.grid[y][x] === 0
-      ? ''
+      ? 'free'
       : 'obstacle-node';
   }
 

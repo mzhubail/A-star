@@ -1,4 +1,10 @@
-<div class="container">
+<div class="container"
+    [ngClass]="{
+      'Change Block': 'select-obstacle',
+      'Change Start': 'select-start',
+      'Change Goal': 'select-goal',
+    }[mode]"
+    >
   <div class="row"
       *ngFor="let row of grid; let y = index"
       >
