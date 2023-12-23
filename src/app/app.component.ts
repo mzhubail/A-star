@@ -79,10 +79,21 @@ export class AppComponent {
   /* Determine block color for interface */
   blockColor(x: number, y: number) {
     // Start node
-    if (x == this.A.start[0] && y == this.A.start[1]) return 'cornflowerblue';
+    if (x == this.A.start[0] && y == this.A.start[1])
+      return 'cornflowerblue';
 
     // Goal node
-    if (x == this.A.goal[0] && y == this.A.goal[1]) return 'coral';
+    if (x == this.A.goal[0] && y == this.A.goal[1])
+      return 'coral';
+
+    // Next node to discover
+    if (this.A.currentPath[0].x === x && this.A.currentPath[0].y === y)
+      return 'yellow';
+
+    // Current path
+    if (this.A.findNode([x, y], this.A.currentPath))
+      return 'purple';
+
 
     if (this.A.findNode([x, y], this.A.open_list))
       return 'lightgray';
