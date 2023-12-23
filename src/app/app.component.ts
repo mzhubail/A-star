@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
-type Mode = 'Change Block' | 'Change Start' | 'Change Goal';
+type Mode = 'Change Block' | 'Change Start' | 'Change Goal' | 'Simulation';
 
 @Component({
   selector: 'app-root',
@@ -48,10 +48,12 @@ export class AppComponent {
 
   applyStep() {
     this.A.applyStep();
+    this.mode = 'Simulation';
   }
 
   reset() {
     this.A = new AStar(this.grid, this.A.start, this.A.goal);
+    this.mode = 'Change Block';
   }
 
   startMode() {
@@ -64,7 +66,9 @@ export class AppComponent {
 
   /* Functionality of clicking a block. */
   blockClicked(x: number, y: number) {
-    if (this.mode == 'Change Block') {
+    if (this.mode == 'Simulation') {
+      return;
+    } else if (this.mode == 'Change Block') {
       this.grid[y][x] = this.grid[y][x] == 0 ? 1 : 0;
       this.A = new AStar(this.grid, this.A.start, this.A.goal);
     } else if (this.mode == 'Change Start') {

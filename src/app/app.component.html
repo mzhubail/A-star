@@ -3,6 +3,7 @@
       'Change Block': 'select-obstacle',
       'Change Start': 'select-start',
       'Change Goal': 'select-goal',
+      'Simulation': '',
     }[mode]"
     >
   <div class="row"
@@ -20,12 +21,20 @@
 </div>
 
 <br />
+
 <p>Mode: {{ mode }}</p>
 <button (click)="log()">Log</button>
-<button (click)="applyStep()">Apply Step</button>
+<button (click)="applyStep()">
+  {{ mode == 'Simulation' ? 'Apply Step' : 'Start simulation' }}
+</button>
 <button (click)="reset()">Reset</button>
-<button (click)="startMode()">Change Start</button>
-<button (click)="goalMode()">Change Goal</button>
+<button (click)="startMode()" [disabled]="mode == 'Simulation'">
+  Change Start
+</button>
+<button (click)="goalMode()" [disabled]="mode == 'Simulation'">
+  Change Goal
+</button>
+
 <br />
 
 <div class="info-container">
