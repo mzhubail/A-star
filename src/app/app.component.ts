@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
+type Mode = 'Change Block' | 'Change Start' | 'Change Goal';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -12,7 +14,7 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   grid: number[][] = [];
   A: AStar;
-
+  mode: Mode = 'Change Block';
 
   constructor() {
     // let size = [10, 10];
@@ -45,18 +47,32 @@ export class AppComponent {
     this.A.applyStep();
   }
 
+  reset() {
+    this.A = new AStar(this.grid, this.A.start);
+  }
+
+  startMode() {
+    this.mode = 'Change Start';
+  }
 
   /* Functionality of clicking a block. */
   blockClicked(x: number, y: number) {
-    this.grid[y][x] = (this.grid[y][x] == 0) ? 1 : 0;
-  }
+    if (this.mode == 'Change Block') {
+      this.grid[y][x] = this.grid[y][x] == 0 ? 1 : 0;
+      this.A = new AStar(this.grid, this.A.start);
+    } else if (this.mode == 'Change Start') {
+      this.A = new AStar(this.grid, [x, y]);
+    } else if (this.mode == 'Change Goal') {
+      // TODO
+    }
 
+    this.mode = 'Change Block';
+  }
 
   /* Determine block color for interface */
   blockColor(x: number, y: number) {
     // Start node
-    if (x == 0 && y == 0)
-      return 'cadetblue';
+    if (x == this.A.start[0] && y == this.A.start[1]) return 'cadetblue';
 
     // Goal node
     if (
