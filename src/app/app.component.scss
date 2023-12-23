@@ -18,7 +18,6 @@ $block-spacing: 10px;
     width: $block-size;
 
     margin-left: $block-spacing;
-    background-color: teal;
 
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border: 0.5px solid black;
@@ -40,3 +39,34 @@ $block-spacing: 10px;
   }
 }
 
+
+
+/// block specific designs ///
+
+.start-node {
+  background-color: cornflowerblue;
+}
+
+.goal-node {
+  background-color: coral;
+}
+
+.next-node {
+  background-color: yellow;
+}
+
+.current-path {
+  background-color: purple;
+}
+
+.open-node {
+  background-color: lightgray;
+}
+
+.closed-node {
+  background-color: lightseagreen;
+}
+
+.obstacle-node {
+  background-color: dimgray;
+}

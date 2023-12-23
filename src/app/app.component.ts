@@ -77,33 +77,33 @@ export class AppComponent {
   }
 
   /* Determine block color for interface */
-  blockColor(x: number, y: number) {
+  blockClass(x: number, y: number) {
     // Start node
     if (x == this.A.start[0] && y == this.A.start[1])
-      return 'cornflowerblue';
+      return 'start-node';
 
     // Goal node
     if (x == this.A.goal[0] && y == this.A.goal[1])
-      return 'coral';
+      return 'goal-node';
 
     // Next node to discover
     if (this.A.currentPath[0].x === x && this.A.currentPath[0].y === y)
-      return 'yellow';
+      return 'next-node';
 
     // Current path
     if (this.A.findNode([x, y], this.A.currentPath))
-      return 'purple';
+      return 'current-path';
 
 
     if (this.A.findNode([x, y], this.A.open_list))
-      return 'lightgray';
+      return 'open-node';
     if (this.A.findNode([x, y], this.A.closed_list))
-      return 'lightseagreen';
+      return 'closed-node';
 
     // Obstacles and free nodes
     return this.grid[y][x] === 0
-      ? 'white'
-      : 'dimgray';
+      ? ''
+      : 'obstacle-node';
   }
 
 

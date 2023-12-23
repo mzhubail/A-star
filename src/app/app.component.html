@@ -5,9 +5,7 @@
     <div class="block"
         *ngFor="let block of row; let x = index"
         (click)="blockClicked(x, y)"
-        [ngStyle]="{
-          'background-color': blockColor(x, y),
-        }"
+        [ngClass]="blockClass(x, y)"
         title="({{x}}, {{y}})"
         >
     </div>
