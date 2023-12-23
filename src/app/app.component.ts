@@ -133,11 +133,13 @@ class AStar {
     this.xLim = this.grid[0].length - 1;
     this.yLim = this.grid.length - 1;
 
+    // Push start node
     this.open_list.push({
       x: start[0],
       y: start[1],
       gScore: 0,
       fScore: this.hValue(start),
+      cameFrom: null,
     });
   }
 
@@ -172,6 +174,8 @@ class AStar {
           y: neighbour[1],
           gScore: newGScore,
           fScore: newGScore + this.hValue(neighbour),
+          // Set the current node as the parent
+          cameFrom: currentNode,
         });
       }
     });
@@ -259,4 +263,5 @@ interface Node {
   y: number,
   fScore: number,
   gScore: number,
+  cameFrom: Node | null,
 }
