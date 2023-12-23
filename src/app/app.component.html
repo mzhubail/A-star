@@ -24,7 +24,7 @@
 
 <p>Mode: {{ mode }}</p>
 <button (click)="log()">Log</button>
-<button (click)="applyStep()">
+<button (click)="applyStep()" [disabled]="A.hasNoNextStep()">
   {{ mode == 'Simulation' ? 'Apply Step' : 'Start simulation' }}
 </button>
 <button (click)="reset()">Reset</button>

@@ -141,6 +141,7 @@ class AStar {
   // Upper limits on x and y values, based on the size of the grid
   xLim: number;
   yLim: number;
+  foundGoal: boolean = false;
 
   constructor(
     public grid: number[][],
@@ -163,12 +164,15 @@ class AStar {
 
 
   public applyStep() {
-    if (this.open_list.length === 0)
+    if (this.open_list.length === 0 || this.foundGoal)
       return;
     const currentNode = this.popLowestFScore(this.open_list)
 
-    if (this.isGoal(currentNode))
+    if (this.isGoal(currentNode)) {
       alert('Goal Found');
+      this.foundGoal = true;
+      return;
+    }
 
     this.neighboursOf(currentNode).forEach(neighbour => {
       const newGScore = currentNode.gScore + 1;
@@ -300,6 +304,11 @@ class AStar {
     }
 
     this.currentPath = path;
+  }
+
+
+  public hasNoNextStep(): boolean {
+    return this.open_list.length === 0 || this.foundGoal;
   }
 }
 
