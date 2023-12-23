@@ -35,8 +35,11 @@ export class AppComponent {
       [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
     ];
 
-
-    this.A = new AStar(this.grid, [0, 0]);
+    this.A = new AStar(
+      this.grid,
+      [0, 0],
+      [this.grid[0].length - 1, this.grid.length - 1],
+    );
   }
 
   log() {
@@ -48,22 +51,26 @@ export class AppComponent {
   }
 
   reset() {
-    this.A = new AStar(this.grid, this.A.start);
+    this.A = new AStar(this.grid, this.A.start, this.A.goal);
   }
 
   startMode() {
     this.mode = 'Change Start';
   }
 
+  goalMode() {
+    this.mode = 'Change Goal';
+  }
+
   /* Functionality of clicking a block. */
   blockClicked(x: number, y: number) {
     if (this.mode == 'Change Block') {
       this.grid[y][x] = this.grid[y][x] == 0 ? 1 : 0;
-      this.A = new AStar(this.grid, this.A.start);
+      this.A = new AStar(this.grid, this.A.start, this.A.goal);
     } else if (this.mode == 'Change Start') {
-      this.A = new AStar(this.grid, [x, y]);
+      this.A = new AStar(this.grid, [x, y], this.A.goal);
     } else if (this.mode == 'Change Goal') {
-      // TODO
+      this.A = new AStar(this.grid, this.A.start, [x, y]);
     }
 
     this.mode = 'Change Block';
@@ -75,11 +82,7 @@ export class AppComponent {
     if (x == this.A.start[0] && y == this.A.start[1]) return 'cadetblue';
 
     // Goal node
-    if (
-      x == this.grid[0].length - 1 &&
-      y == this.grid.length - 1
-    )
-      return 'coral';
+    if (x == this.A.goal[0] && y == this.A.goal[1]) return 'coral';
 
     if (this.A.findNode([x, y], this.A.open_list))
       return 'lightgreen';
@@ -113,22 +116,17 @@ class AStar {
   open_list: Node[] = [];
   closed_list: Node[] = [];
 
-  // Coordinates of goal node
-  goal: Coordinates;
-
   // Upper limits on x and y values, based on the size of the grid
   xLim: number;
   yLim: number;
 
-
   constructor(
     public grid: number[][],
     public start: Coordinates,
+    public goal: Coordinates,
   ) {
     this.xLim = this.grid[0].length - 1;
     this.yLim = this.grid.length - 1;
-
-    this.goal = [this.xLim, this.yLim];
 
     this.open_list.push({
       x: start[0],
