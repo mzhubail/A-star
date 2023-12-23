@@ -121,6 +121,8 @@ class AStar {
   open_list: Node[] = [];
   closed_list: Node[] = [];
 
+  currentPath!: Node[];
+
   // Upper limits on x and y values, based on the size of the grid
   xLim: number;
   yLim: number;
@@ -141,6 +143,7 @@ class AStar {
       fScore: this.hValue(start),
       cameFrom: null,
     });
+    this.updateCurrentPath();
   }
 
 
@@ -181,6 +184,7 @@ class AStar {
     });
 
     this.closed_list.push(currentNode);
+    this.updateCurrentPath();
   }
 
 
@@ -197,6 +201,22 @@ class AStar {
       }
     });
     l.splice(ind, 1);
+    return min;
+  }
+
+
+  /* Returns the node with the lowest f-score from the list.
+   *
+   * Returns the node.
+   */
+  public getLowestFScore(l: Node[]) {
+    let min = l[0], ind = 0;
+    l.forEach((node, index) => {
+      if (node.fScore < min.fScore) {
+        min = node;
+        ind = index;
+      }
+    });
     return min;
   }
 
@@ -253,6 +273,18 @@ class AStar {
   public findNode(p: Coordinates, l: Node[]): Node | undefined {
     const [targetX, targetY] = p;
     return l.find(node => targetX === node.x && targetY === node.y);
+  }
+
+
+  public updateCurrentPath() {
+    let head = this.getLowestFScore(this.open_list);
+    const path = [head];
+    while (head.cameFrom !== null) {
+      path.push(head.cameFrom);
+      head = head.cameFrom;
+    }
+
+    this.currentPath = path;
   }
 }
 
