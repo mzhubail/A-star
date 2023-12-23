@@ -45,6 +45,9 @@ $block-spacing: 10px;
 
 .start-node {
   background-color: cornflowerblue;
+  .circle {
+    background-color: black;
+  }
 }
 
 .goal-node {
@@ -52,21 +55,51 @@ $block-spacing: 10px;
 }
 
 .next-node {
-  background-color: yellow;
+  // background-color: yellow;
+  background-color: lightyellow;
+  .circle {
+    // background-color: black;
+    border: 1px solid black;
+  }
 }
 
 .current-path {
-  background-color: purple;
+  background-color: steelblue;
+  .circle {
+    background-color: black;
+  }
 }
 
 .open-node {
-  background-color: lightgray;
+  // background-color: lightgray;
+  .circle {
+    border: 1px solid black;
+  }
 }
 
 .closed-node {
-  background-color: lightseagreen;
+  // background-color: dimgray;
+  background-color: lightgray;
+  .circle {
+    // border: 1px solid black;
+    background-color: black;
+  }
 }
 
 .obstacle-node {
-  background-color: dimgray;
+  background-color: black;
 }
+
+
+.block .circle {
+  height: $block-size / 4;
+  width: $block-size / 4;
+
+  margin: $block-size * 3 / 8;
+
+  border-radius: 100%;
+  // background-color: black;
+}
+
+
+
