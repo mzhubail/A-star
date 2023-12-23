@@ -28,7 +28,7 @@
     Open list:
     <ol>
       <li *ngFor="let entry of sortNodesList(A.open_list); let index = index">
-        {{ entry | json }}
+        {{ formatNode(entry) }}
       </li>
     </ol>
   </div>
@@ -38,7 +38,7 @@
     Closed list:
     <ol>
       <li *ngFor="let entry of A.closed_list; let index = index">
-        {{ entry | json }}
+        {{ formatNode(entry) }}
       </li>
     </ol>
   </div>

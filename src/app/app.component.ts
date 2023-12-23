@@ -109,6 +109,11 @@ export class AppComponent {
     });
     return _list;
   }
+
+  formatNode(n: Node): string {
+    const { x, y, fScore, gScore } = n;
+    return `\{ (${x}, ${y})  |  g = ${gScore}  |  f = ${fScore} \}`;
+  }
 }
 
 
