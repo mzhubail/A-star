@@ -2,7 +2,19 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
+
 type Mode = 'Change Block' | 'Change Start' | 'Change Goal' | 'Simulation';
+
+type Coordinates = [number, number];
+
+interface Node {
+  x: number,
+  y: number,
+  fScore: number,
+  gScore: number,
+  cameFrom: Node | null,
+}
+
 
 @Component({
   selector: 'app-root',
@@ -95,13 +107,13 @@ export class AppComponent {
       return 'next-node';
 
     // Current path
-    if (this.A.findNode([x, y], this.A.currentPath))
+    if (findNode([x, y], this.A.currentPath))
       return 'current-path';
 
 
-    if (this.A.findNode([x, y], this.A.open_list))
+    if (findNode([x, y], this.A.open_list))
       return 'open-node';
-    if (this.A.findNode([x, y], this.A.closed_list))
+    if (findNode([x, y], this.A.closed_list))
       return 'closed-node';
 
     // Obstacles and free nodes
@@ -180,11 +192,11 @@ class AStar {
       let nNode;
 
       // Search in open list
-      if (nNode = this.findNode(neighbour, this.open_list)) {
+      if (nNode = findNode(neighbour, this.open_list)) {
         console.log('In open list', nNode);
       }
       // Search in closed list
-      else if (nNode = this.findNode(neighbour, this.closed_list)) {
+      else if (nNode = findNode(neighbour, this.closed_list)) {
         console.log('In closed list', nNode);
       }
       else {
@@ -281,21 +293,13 @@ class AStar {
 
 
   /* Check goal node */
-  public isGoal(p: Node) {
+  private isGoal(p: Node) {
     const [x, y] = this.goal;
     return p.x === x && p.y === y;
   }
 
-  /* Search for given coordinate withing a list, and return the node
-   * corresponding to it.
-   */
-  public findNode(p: Coordinates, l: Node[]): Node | undefined {
-    const [targetX, targetY] = p;
-    return l.find(node => targetX === node.x && targetY === node.y);
-  }
 
-
-  public updateCurrentPath() {
+  private updateCurrentPath() {
     let head = this.getLowestFScore(this.open_list);
     const path = [head];
     while (head.cameFrom !== null) {
@@ -312,12 +316,12 @@ class AStar {
   }
 }
 
-type Coordinates = [number, number];
 
-interface Node {
-  x: number,
-  y: number,
-  fScore: number,
-  gScore: number,
-  cameFrom: Node | null,
+
+/* Search for given coordinate withing a list, and return the node
+  * corresponding to it.
+  */
+function findNode(p: Coordinates, l: Node[]): Node | undefined {
+  const [targetX, targetY] = p;
+  return l.find(node => targetX === node.x && targetY === node.y);
 }
