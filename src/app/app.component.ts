@@ -195,7 +195,16 @@ class AStar {
 
       // Search in open list
       if (nNode = findNode(neighbour, this.open_list)) {
-        console.log('In open list', nNode);
+        // If the new path is cheaper than the current best path to nNode
+        if (newGScore < nNode.gScore) {
+          nNode.gScore = newGScore;
+          nNode.fScore = newGScore + this.hValue(nNode);
+
+          removeFromChildren(nNode, nNode.cameFrom);
+          nNode.cameFrom = currentNode;
+
+          currentNode.children.push(nNode);
+        }
       }
       // Search in closed list
       else if (nNode = findNode(neighbour, this.closed_list)) {
@@ -331,3 +340,12 @@ function findNode(p: Coordinates, l: Node[]): Node | undefined {
   const [targetX, targetY] = p;
   return l.find(node => targetX === node.x && targetY === node.y);
 }
+
+function removeFromChildren(targetNode: Node, l: Node | null) {
+  const { x, y } = targetNode;
+  if (!l)
+    return;
+  l.children = l.children.filter(node => x !== node.x || y !== node.y);
+  return;
+}
+
