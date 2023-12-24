@@ -201,8 +201,8 @@ class AStar {
           nNode.fScore = newGScore + this.hValue(nNode);
 
           removeFromChildren(nNode, nNode.cameFrom);
-          nNode.cameFrom = currentNode;
 
+          nNode.cameFrom = currentNode;
           currentNode.children.push(nNode);
         }
       }
