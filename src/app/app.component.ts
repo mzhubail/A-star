@@ -13,6 +13,7 @@ interface Node {
   fScore: number,
   gScore: number,
   cameFrom: Node | null,
+  children: Node[],
 }
 
 
@@ -170,6 +171,7 @@ class AStar {
       gScore: 0,
       fScore: this.hValue(start),
       cameFrom: null,
+      children: [],
     });
     this.updateCurrentPath();
   }
@@ -203,14 +205,18 @@ class AStar {
         // Note that the neighbour is added to the beginning of the open_list.
         // Thus when nodes have the same f-score the search prefers newly
         // introduced nodes.
-        this.open_list.unshift({
+        const node = {
           x: neighbour[0],
           y: neighbour[1],
           gScore: newGScore,
           fScore: newGScore + this.hValue(neighbour),
           // Set the current node as the parent
           cameFrom: currentNode,
-        });
+          children: [],
+        };
+
+        this.open_list.unshift(node);
+        currentNode.children.push(node);
       }
     });
 
