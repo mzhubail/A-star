@@ -208,7 +208,15 @@ class AStar {
       }
       // Search in closed list
       else if (nNode = findNode(neighbour, this.closed_list)) {
-        console.log('In closed list', nNode);
+        // If the new path is cheaper than the current best path to nNode
+        if (newGScore < nNode.gScore) {
+          console.log('In closed list', nNode, 'with better path');
+
+          removeFromChildren(nNode, nNode.cameFrom);
+          nNode.cameFrom = currentNode;
+
+          updateNodeAndChildren(nNode.gScore - newGScore, nNode);
+        }
       }
       else {
         // Note that the neighbour is added to the beginning of the open_list.
@@ -349,3 +357,13 @@ function removeFromChildren(targetNode: Node, l: Node | null) {
   return;
 }
 
+function updateNodeAndChildren(delta: number, n: Node) {
+  // Update node
+  n.gScore -= delta;
+  n.fScore -= delta;
+
+  // Update children
+  n.children.forEach(childNode => {
+    updateNodeAndChildren(delta, childNode);
+  });
+}
