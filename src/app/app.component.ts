@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-
+import { FormsModule } from '@angular/forms';
 
 type Mode = 'Change Block' | 'Change Start' | 'Change Goal' | 'Simulation';
 
@@ -20,7 +20,7 @@ interface Node {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -28,6 +28,8 @@ export class AppComponent {
   grid: number[][] = [];
   A: AStar;
   mode: Mode = 'Change Block';
+  grid_width = 10;
+  grid_height = 6;
 
   constructor() {
     // let size = [10, 10];
@@ -75,6 +77,28 @@ export class AppComponent {
 
   goalMode() {
     this.mode = 'Change Goal';
+  }
+
+  generateRandomGrid() {
+    if (Math.min(this.grid_height, this.grid_width) < 5) {
+      alert('Min grid size is 5x5');
+      return;
+    }
+    let newGrid = Array.from({ length: this.grid_height }, () =>
+      Array.from({ length: this.grid_width }, () =>
+        Math.random() < 0.3 ? 1 : 0,
+      ),
+    );
+    newGrid[0][0] = 0;
+    newGrid[newGrid.length - 1][newGrid[0].length - 1] = 0;
+
+    this.grid = newGrid;
+    this.A = new AStar(
+      this.grid,
+      [0, 0],
+      [this.grid[0].length - 1, this.grid.length - 1],
+    );
+    this.mode = 'Change Block';
   }
 
   /* Functionality of clicking a block. */

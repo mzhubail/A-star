@@ -34,6 +34,15 @@
 <button (click)="goalMode()" [disabled]="mode == 'Simulation'">
   Change Goal
 </button>
+<br />
+<br />
+<label for="grid_height">Grid height: </label>
+<input type="number" id="grid_height" [(ngModel)]="grid_height" />
+<br />
+<label for="grid_width">Grid width: </label>
+<input type="number" id="grid_width" [(ngModel)]="grid_width" />
+<br />
+<button (click)="generateRandomGrid()">Generate Random Grid</button>
 
 <br />
 
