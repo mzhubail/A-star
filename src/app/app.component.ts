@@ -359,6 +359,10 @@ class AStar {
 
 
   public hasNoNextStep(): boolean {
+    if (this.open_list.length === 0 && !this.foundGoal) {
+      alert('Goal cannot be reached');
+      this.foundGoal = true;
+    }
     return this.open_list.length === 0 || this.foundGoal;
   }
 }
