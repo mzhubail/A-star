@@ -36,6 +36,16 @@
 <button (click)="goalMode()" [disabled]="mode == 'Simulation'">
   Change Goal
 </button>
+
+<select
+  [(ngModel)]="heuristic"
+  (ngModelChange)="setHeuristic()"
+  [disabled]="mode == 'Simulation'"
+>
+  <option>Manhattan</option>
+  <option>Euclidean</option>
+</select>
+
 <br />
 <br />
 <label for="grid_height">Grid height:</label>

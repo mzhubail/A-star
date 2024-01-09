@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 
 type Mode = 'Change Block' | 'Change Start' | 'Change Goal' | 'Simulation';
 
+type Heuristic = 'Manhattan' | 'Euclidean';
+
 type Coordinates = [number, number];
 
 interface Node {
@@ -29,6 +31,7 @@ export class AppComponent {
   mode: Mode = 'Change Block';
   grid_width = 10;
   grid_height = 6;
+  heuristic: Heuristic = 'Manhattan';
 
   constructor() {
     // let size = [10, 10];
@@ -53,6 +56,7 @@ export class AppComponent {
       this.grid,
       [0, 0],
       [this.grid[0].length - 1, this.grid.length - 1],
+      this.heuristic,
     );
   }
 
@@ -73,7 +77,7 @@ export class AppComponent {
   }
 
   reset() {
-    this.A = new AStar(this.grid, this.A.start, this.A.goal);
+    this.A = new AStar(this.grid, this.A.start, this.A.goal, this.heuristic);
     this.mode = 'Change Block';
   }
 
@@ -103,8 +107,13 @@ export class AppComponent {
       this.grid,
       [0, 0],
       [this.grid[0].length - 1, this.grid.length - 1],
+      this.heuristic,
     );
     this.mode = 'Change Block';
+  }
+
+  setHeuristic() {
+    this.A.heuristic = this.heuristic;
   }
 
   /* Functionality of clicking a block. */
@@ -113,11 +122,11 @@ export class AppComponent {
       return;
     } else if (this.mode == 'Change Block') {
       this.grid[y][x] = this.grid[y][x] == 0 ? 1 : 0;
-      this.A = new AStar(this.grid, this.A.start, this.A.goal);
+      this.A = new AStar(this.grid, this.A.start, this.A.goal, this.heuristic);
     } else if (this.mode == 'Change Start') {
-      this.A = new AStar(this.grid, [x, y], this.A.goal);
+      this.A = new AStar(this.grid, [x, y], this.A.goal, this.heuristic);
     } else if (this.mode == 'Change Goal') {
-      this.A = new AStar(this.grid, this.A.start, [x, y]);
+      this.A = new AStar(this.grid, this.A.start, [x, y], this.heuristic);
     }
 
     this.mode = 'Change Block';
@@ -191,6 +200,7 @@ class AStar {
     public grid: number[][],
     public start: Coordinates,
     public goal: Coordinates,
+    public heuristic: Heuristic,
   ) {
     this.xLim = this.grid[0].length - 1;
     this.yLim = this.grid.length - 1;
@@ -315,7 +325,12 @@ class AStar {
       x = p[0];
       y = p[1];
     }
-    return Math.abs(x - this.goal[0]) + Math.abs(y - this.goal[1]);
+
+    if (this.heuristic == 'Manhattan') {
+      return Math.abs(x - this.goal[0]) + Math.abs(y - this.goal[1]);
+    } else {
+      return Math.sqrt((x - this.goal[0]) ** 2 + (y - this.goal[1]) ** 2);
+    }
   }
 
   /* Find neighbours of a given node.
