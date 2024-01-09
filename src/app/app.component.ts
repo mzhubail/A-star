@@ -65,6 +65,13 @@ export class AppComponent {
     this.mode = 'Simulation';
   }
 
+  keyboardApplyStep(ev: KeyboardEvent) {
+    if (ev.key == ' ') {
+      ev.preventDefault();
+      this.applyStep();
+    }
+  }
+
   reset() {
     this.A = new AStar(this.grid, this.A.start, this.A.goal);
     this.mode = 'Change Block';

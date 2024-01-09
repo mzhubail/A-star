@@ -23,6 +23,10 @@ $block-spacing: 10px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     // border: 0.5px solid black;
   }
+
+  &:focus-visible {
+    outline: none;
+  }
 }
 
 .info-container {

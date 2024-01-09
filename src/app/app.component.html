@@ -6,6 +6,8 @@
     'Change Goal': 'select-goal',
     'Simulation': '',
   }[mode]"
+  (keydown)="keyboardApplyStep($event)"
+  tabindex="0"
 >
   <div class="row" *ngFor="let row of grid; let y = index">
     <div
