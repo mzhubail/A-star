@@ -1,20 +1,20 @@
-<div class="container"
-    [ngClass]="{
-      'Change Block': 'select-obstacle',
-      'Change Start': 'select-start',
-      'Change Goal': 'select-goal',
-      'Simulation': '',
-    }[mode]"
+<div
+  class="container"
+  [ngClass]="{
+    'Change Block': 'select-obstacle',
+    'Change Start': 'select-start',
+    'Change Goal': 'select-goal',
+    'Simulation': '',
+  }[mode]"
+>
+  <div class="row" *ngFor="let row of grid; let y = index">
+    <div
+      class="block"
+      *ngFor="let block of row; let x = index"
+      (click)="blockClicked(x, y)"
+      [ngClass]="blockClass(x, y)"
+      title="({{ x }}, {{ y }})"
     >
-  <div class="row"
-      *ngFor="let row of grid; let y = index"
-      >
-    <div class="block"
-        *ngFor="let block of row; let x = index"
-        (click)="blockClicked(x, y)"
-        [ngClass]="blockClass(x, y)"
-        title="({{x}}, {{y}})"
-        >
       <div class="circle"></div>
     </div>
   </div>
@@ -25,7 +25,7 @@
 <p>Mode: {{ mode }}</p>
 <button (click)="log()">Log</button>
 <button (click)="applyStep()" [disabled]="A.hasNoNextStep()">
-  {{ mode == 'Simulation' ? 'Apply Step' : 'Start simulation' }}
+  {{ mode == "Simulation" ? "Apply Step" : "Start simulation" }}
 </button>
 <button (click)="reset()">Reset</button>
 <button (click)="startMode()" [disabled]="mode == 'Simulation'">
@@ -36,10 +36,10 @@
 </button>
 <br />
 <br />
-<label for="grid_height">Grid height: </label>
+<label for="grid_height">Grid height:</label>
 <input type="number" id="grid_height" [(ngModel)]="grid_height" />
 <br />
-<label for="grid_width">Grid width: </label>
+<label for="grid_width">Grid width:</label>
 <input type="number" id="grid_width" [(ngModel)]="grid_width" />
 <br />
 <button (click)="generateRandomGrid()">Generate Random Grid</button>
@@ -55,7 +55,6 @@
       </li>
     </ol>
   </div>
-
 
   <div>
     Closed list:

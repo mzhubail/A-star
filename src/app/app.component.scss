@@ -40,8 +40,6 @@ $block-spacing: 10px;
   }
 }
 
-
-
 /// block specific designs ///
 
 .start-node {
@@ -91,7 +89,6 @@ $block-spacing: 10px;
   background-color: black;
 }
 
-
 .block .circle {
   height: $block-size / 4;
   width: $block-size / 4;
@@ -102,14 +99,14 @@ $block-spacing: 10px;
   // background-color: black;
 }
 
-
-
 .select-start .block:hover {
-  background-color: lighten($color: (cornflowerblue), $amount: 25%);
+  background-color: lighten($color: cornflowerblue, $amount: 25%);
 }
+
 .select-goal .block:hover {
-  background-color: lighten($color: (coral), $amount: 25%);
+  background-color: lighten($color: coral, $amount: 25%);
 }
+
 .select-obstacle .block.free:hover {
   background-color: lightgray;
 }

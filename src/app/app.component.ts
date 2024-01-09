@@ -8,21 +8,20 @@ type Mode = 'Change Block' | 'Change Start' | 'Change Goal' | 'Simulation';
 type Coordinates = [number, number];
 
 interface Node {
-  x: number,
-  y: number,
-  fScore: number,
-  gScore: number,
-  cameFrom: Node | null,
-  children: Node[],
+  x: number;
+  y: number;
+  fScore: number;
+  gScore: number;
+  cameFrom: Node | null;
+  children: Node[];
 }
-
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, FormsModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   grid: number[][] = [];
@@ -120,44 +119,46 @@ export class AppComponent {
   /* Determine block color for interface */
   blockClass(x: number, y: number) {
     // Start node
-    if (x == this.A.start[0] && y == this.A.start[1])
+    if (x == this.A.start[0] && y == this.A.start[1]) {
       return 'start-node';
+    }
 
     // Goal node
-    if (x == this.A.goal[0] && y == this.A.goal[1])
+    if (x == this.A.goal[0] && y == this.A.goal[1]) {
       return 'goal-node';
+    }
 
     // Next node to discover
     if (this.A.currentPath[0].x === x && this.A.currentPath[0].y === y)
       return 'next-node';
 
     // Current path
-    if (findNode([x, y], this.A.currentPath))
+    if (findNode([x, y], this.A.currentPath)) {
       return 'current-path';
+    }
 
-
-    if (findNode([x, y], this.A.open_list))
+    if (findNode([x, y], this.A.open_list)) {
       return 'open-node';
-    if (findNode([x, y], this.A.closed_list))
+    }
+    if (findNode([x, y], this.A.closed_list)) {
       return 'closed-node';
+    }
 
     // Obstacles and free nodes
-    return this.grid[y][x] === 0
-      ? 'free'
-      : 'obstacle-node';
+    return this.grid[y][x] === 0 ? 'free' : 'obstacle-node';
   }
-
 
   /* Sorts a list of nodes.  Used in the interface for open list */
   sortNodesList(list: Node[]) {
     const _list = [...list];
     _list.sort((a, b) => {
-      if (a.fScore > b.fScore)
+      if (a.fScore > b.fScore) {
         return 1;
-      else if (a.fScore < b.fScore)
+      } else if (a.fScore < b.fScore) {
         return -1;
-      else
+      } else {
         return 0;
+      }
     });
     return _list;
   }
@@ -167,7 +168,6 @@ export class AppComponent {
     return `\{ (${x}, ${y})  |  g = ${gScore}  |  f = ${fScore} \}`;
   }
 }
-
 
 class AStar {
   open_list: Node[] = [];
@@ -200,11 +200,12 @@ class AStar {
     this.updateCurrentPath();
   }
 
-
   public applyStep() {
-    if (this.open_list.length === 0 || this.foundGoal)
+    if (this.open_list.length === 0 || this.foundGoal) {
       return;
-    const currentNode = this.popLowestFScore(this.open_list)
+    }
+
+    const currentNode = this.popLowestFScore(this.open_list);
 
     if (this.isGoal(currentNode)) {
       alert('Goal Found');
@@ -218,7 +219,7 @@ class AStar {
       let nNode;
 
       // Search in open list
-      if (nNode = findNode(neighbour, this.open_list)) {
+      if ((nNode = findNode(neighbour, this.open_list))) {
         // If the new path is cheaper than the current best path to nNode
         if (newGScore < nNode.gScore) {
           nNode.gScore = newGScore;
@@ -231,7 +232,7 @@ class AStar {
         }
       }
       // Search in closed list
-      else if (nNode = findNode(neighbour, this.closed_list)) {
+      else if ((nNode = findNode(neighbour, this.closed_list))) {
         // If the new path is cheaper than the current best path to nNode
         if (newGScore < nNode.gScore) {
           console.log('In closed list', nNode, 'with better path');
@@ -241,8 +242,7 @@ class AStar {
 
           updateNodeAndChildren(nNode.gScore - newGScore, nNode);
         }
-      }
-      else {
+      } else {
         // Note that the neighbour is added to the beginning of the open_list.
         // Thus when nodes have the same f-score the search prefers newly
         // introduced nodes.
@@ -265,13 +265,13 @@ class AStar {
     this.updateCurrentPath();
   }
 
-
   /* Remove the node with the lowest f-score from the list.
    *
    * Returns the node.
    */
   public popLowestFScore(l: Node[]) {
-    let min = l[0], ind = 0;
+    let min = l[0],
+      ind = 0;
     l.forEach((node, index) => {
       if (node.fScore < min.fScore) {
         min = node;
@@ -282,13 +282,13 @@ class AStar {
     return min;
   }
 
-
   /* Returns the node with the lowest f-score from the list.
    *
    * Returns the node.
    */
   public getLowestFScore(l: Node[]) {
-    let min = l[0], ind = 0;
+    let min = l[0],
+      ind = 0;
     l.forEach((node, index) => {
       if (node.fScore < min.fScore) {
         min = node;
@@ -297,7 +297,6 @@ class AStar {
     });
     return min;
   }
-
 
   /* Calculate h-value vased on manhattan distance */
   public hValue(p: Coordinates | Node) {
@@ -309,10 +308,8 @@ class AStar {
       x = p[0];
       y = p[1];
     }
-    return Math.abs(x - this.goal[0]) +
-      Math.abs(y - this.goal[1]);
+    return Math.abs(x - this.goal[0]) + Math.abs(y - this.goal[1]);
   }
-
 
   /* Find neighbours of a given node.
    *
@@ -323,14 +320,18 @@ class AStar {
     const { x, y } = p;
     let n: Coordinates[] = [];
 
-    if (x > 0)
+    if (x > 0) {
       n.push([x - 1, y]);
-    if (x < this.xLim)
+    }
+    if (x < this.xLim) {
       n.push([x + 1, y]);
-    if (y > 0)
+    }
+    if (y > 0) {
       n.push([x, y - 1]);
-    if (y < this.yLim)
+    }
+    if (y < this.yLim) {
       n.push([x, y + 1]);
+    }
 
     // Filter out obstacles
     n = n.filter(([x, y]) => this.grid[y][x] === 0);
@@ -338,13 +339,11 @@ class AStar {
     return n;
   }
 
-
   /* Check goal node */
   private isGoal(p: Node) {
     const [x, y] = this.goal;
     return p.x === x && p.y === y;
   }
-
 
   private updateCurrentPath() {
     let head = this.getLowestFScore(this.open_list);
@@ -357,7 +356,6 @@ class AStar {
     this.currentPath = path;
   }
 
-
   public hasNoNextStep(): boolean {
     if (this.open_list.length === 0 && !this.foundGoal) {
       alert('Goal cannot be reached');
@@ -367,22 +365,19 @@ class AStar {
   }
 }
 
-
-
 /* Search for given coordinate withing a list, and return the node
-  * corresponding to it.
-  */
+ * corresponding to it.
+ */
 function findNode(p: Coordinates, l: Node[]): Node | undefined {
   const [targetX, targetY] = p;
   return l.find(node => targetX === node.x && targetY === node.y);
 }
 
 function removeFromChildren(targetNode: Node, l: Node | null) {
+  if (!l) return;
+
   const { x, y } = targetNode;
-  if (!l)
-    return;
   l.children = l.children.filter(node => x !== node.x || y !== node.y);
-  return;
 }
 
 function updateNodeAndChildren(delta: number, n: Node) {
