@@ -2,12 +2,13 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { distanceBasedMaze, uniformDistributionMaze } from './maze-generators';
 
 type Mode = 'Change Block' | 'Change Start' | 'Change Goal' | 'Simulation';
 
 type Heuristic = 'Manhattan' | 'Euclidean';
 
-type Coordinates = [number, number];
+export type Coordinates = [number, number];
 
 interface Node {
   x: number;
@@ -96,13 +97,8 @@ export class AppComponent {
       alert('Min grid size is 5x5');
       return;
     }
-    let newGrid = Array.from({ length: this.grid_height }, () =>
-      Array.from({ length: this.grid_width }, () =>
-        Math.random() < 0.3 ? 1 : 0,
-      ),
-    );
-    newGrid[0][0] = 0;
-    newGrid[newGrid.length - 1][newGrid[0].length - 1] = 0;
+
+    const newGrid = distanceBasedMaze(this.grid_width, this.grid_height);
 
     this.updateBlockSize();
 
