@@ -55,6 +55,13 @@
 <label for="grid_width">Grid width:</label>
 <input type="number" id="grid_width" [(ngModel)]="grid_width" />
 <br />
+
+<label>Maze generator:</label>
+<select [(ngModel)]="mazeGenerator">
+  <option *ngFor="let gen of generatorsList | keyvalue">{{ gen.key }}</option>
+</select>
+<br />
+
 <button (click)="generateRandomGrid()">Generate Random Grid</button>
 
 <br />

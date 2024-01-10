@@ -36,6 +36,10 @@ export class AppComponent {
 
   @ViewChild('container') container!: ElementRef<HTMLElement>;
 
+  mazeGenerator: keyof typeof generatorsList = 'Uniform Distribution';
+  // Expose maze generators to html interface
+  generatorsList = generatorsList;
+
   constructor() {
     // let size = [10, 10];
     // for (let i = 0; i < size[0]; i++) {
@@ -98,7 +102,10 @@ export class AppComponent {
       return;
     }
 
-    const newGrid = distanceBasedMaze(this.grid_width, this.grid_height);
+    const newGrid = generatorsList[this.mazeGenerator](
+      this.grid_width,
+      this.grid_height,
+    );
 
     this.updateBlockSize();
 

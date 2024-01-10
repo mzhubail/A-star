@@ -1,5 +1,10 @@
 import { Coordinates } from './app.component';
 
+export const generatorsList = {
+  'Uniform Distribution': uniformDistributionMaze,
+  'Distance Based': distanceBasedMaze,
+};
+
 export function uniformDistributionMaze(width: number, height: number) {
   let newGrid = Array.from({ length: height }, () =>
     Array.from({ length: width }, () => (Math.random() < 0.3 ? 1 : 0)),
