@@ -100,10 +100,10 @@ $block-spacing: 0.25em;
 }
 
 .block .circle {
-  height: $block-size / 4;
-  width: $block-size / 4;
+  height: calc($block-size / 4);
+  width: calc($block-size / 4);
 
-  margin: $block-size * 3 / 8;
+  margin: calc($block-size * 3 / 8);
 
   border-radius: 100%;
   // background-color: black;
