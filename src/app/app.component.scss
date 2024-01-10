@@ -1,5 +1,6 @@
-$block-size: 40px;
-$block-spacing: 10px;
+// Blocks size is on the font-size set inside .container
+$block-size: 1em;
+$block-spacing: 0.25em;
 
 .container {
   margin-top: 3rem;
@@ -26,6 +27,11 @@ $block-spacing: 10px;
 
   &:focus-visible {
     outline: none;
+  }
+
+  font-size: 40px;
+  & * {
+    font-size: inherit;
   }
 }
 

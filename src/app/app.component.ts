@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -32,6 +32,8 @@ export class AppComponent {
   grid_width = 10;
   grid_height = 6;
   heuristic: Heuristic = 'Manhattan';
+
+  @ViewChild('container') container!: ElementRef<HTMLElement>;
 
   constructor() {
     // let size = [10, 10];
@@ -102,6 +104,8 @@ export class AppComponent {
     newGrid[0][0] = 0;
     newGrid[newGrid.length - 1][newGrid[0].length - 1] = 0;
 
+    this.updateBlockSize();
+
     this.grid = newGrid;
     this.A = new AStar(
       this.grid,
@@ -110,6 +114,16 @@ export class AppComponent {
       this.heuristic,
     );
     this.mode = 'Change Block';
+  }
+
+  private updateBlockSize() {
+    const availableWidth = window.innerWidth * 0.9;
+    // Note we divide by 1.25 to account for 0.25 margin between blocks
+    const calculatedBs = availableWidth / this.grid_width / 1.25;
+    // Cap bs at 40
+    const bs = calculatedBs < 40 ? calculatedBs : 40;
+
+    this.container.nativeElement.style.fontSize = bs + 'px';
   }
 
   setHeuristic() {
