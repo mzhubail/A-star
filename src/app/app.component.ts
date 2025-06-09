@@ -2,7 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { distanceBasedMaze, uniformDistributionMaze } from './maze-generators';
+import { generatorsList, recursiveBacktrackingMaze } from './maze-generators';
 
 type Mode = 'Change Block' | 'Change Start' | 'Change Goal' | 'Simulation';
 
@@ -30,8 +30,9 @@ export class AppComponent {
   grid: number[][] = [];
   A: AStar;
   mode: Mode = 'Change Block';
-  grid_width = 10;
-  grid_height = 6;
+  /** Number of blocks in each row */
+  grid_width = 21;
+  grid_height = 21;
   heuristic: Heuristic = 'Manhattan';
 
   @ViewChild('container') container!: ElementRef<HTMLElement>;
@@ -242,7 +243,7 @@ class AStar {
     const currentNode = this.popLowestFScore(this.open_list);
 
     if (this.isGoal(currentNode)) {
-      alert('Goal Found');
+      alert(`Goal Found with cost ${currentNode.gScore}`);
       this.foundGoal = true;
       return;
     }
@@ -346,7 +347,7 @@ class AStar {
     if (this.heuristic == 'Manhattan') {
       return Math.abs(x - this.goal[0]) + Math.abs(y - this.goal[1]);
     } else {
-      return Math.sqrt((x - this.goal[0]) ** 2 + (y - this.goal[1]) ** 2);
+      return 10 * Math.sqrt((x - this.goal[0]) ** 2 + (y - this.goal[1]) ** 2);
     }
   }
 

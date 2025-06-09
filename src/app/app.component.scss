@@ -99,6 +99,10 @@ $block-spacing: 0.25em;
   background-color: black;
 }
 
+.free {
+  background-color: white;
+}
+
 .block .circle {
   height: calc($block-size / 4);
   width: calc($block-size / 4);
